@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/sirakgebremariam/Documents/Embedded Systems/1st year/Intor to Embedded/Lab",
+      "program": "/Users/sirakgebremariam/Documents/Embedded Systems/1st year/Intor to Embedded/Lab/build/Debug/outDebug"
+    }
+  ]
+}
