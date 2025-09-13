@@ -1,0 +1,104 @@
+
+Algorithm for day1_part2.c
+
+Step 1: Read Input
+I read pairs of integers (left[i] and right[i]) from the input file until the end of the file:
+
+int left[MAXN], right[MAXN];
+int n = 0;
+
+// Read input until EOF
+while (scanf("%d %d", &left[n], &right[n]) == 2)
+{
+    n++;
+    if (n >= MAXN)
+    {
+        fprintf(stderr, "Increase MAXN for larger input.\n");
+        return 1;
+    }
+}
+
+Step 2: Build Frequency Table
+
+I implemented a simple hash table to count how many times each number appears in the right[] array:
+
+for (int i = 0; i < n; i++)
+{
+    add_count(right[i]);
+}
+
+	•	add_count(key) adds a number to the hash table or increments its count if it already exists.
+
+
+Step 3: Compute Similarity Score
+
+For each number in the left[] array:
+
+long long score = 0;
+for (int i = 0; i < n; i++)
+{
+    int freq = get_count(left[i]); // frequency in right[]
+    score += (long long)left[i] * freq;
+}
+
+	•	Multiply left[i] by its frequency and add it to the total score.
+
+
+Step 4: Print Result
+
+Finally, I print the total similarity score:
+
+printf("%lld\n", score);
+
+
+Step 5: Hash Functions
+	•	hash_int(int x) generates a hash for an integer:
+
+    unsigned hash_int(int x)
+        {
+            return ((unsigned)x * 2654435761u) % HASH_SIZE;
+        }
+
+	•	get_count(int key) retrieves the frequency of a number:
+
+int get_count(int key)
+{
+    unsigned h = hash_int(key);
+    Node *p = table[h];
+    while (p)
+    {
+        if (p->key == key)
+            return p->count;
+        p = p->next;
+    }
+    return 0;
+}
+
+	•	add_count(int key) adds a number to the hash table:
+
+void add_count(int key)
+{
+    unsigned h = hash_int(key);
+    Node *p = table[h];
+    while (p)
+    {
+        if (p->key == key)
+        {
+            p->count++;
+            return;
+        }
+        p = p->next;
+    }
+    Node *n = malloc(sizeof(Node));
+    n->key = key;
+    n->count = 1;
+    n->next = table[h];
+    table[h] = n;
+}
+
+
+Compilation and Execution
+
+Compile: gcc -O2 -o day1_part2 day1_part2.c
+
+Run: ./day1_part2 < day2_part1_input.txt

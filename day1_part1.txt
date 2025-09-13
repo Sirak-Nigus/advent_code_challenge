@@ -1,1 +1,85 @@
+Algorithm: 
+
+Step 1: Prepare storage
+I created two arrays:
+	•	left[] – to store the first number from each pair
+	•	right[] – to store the second number from each pair
+I also set a counter n to keep track of how many pairs I have, and defined a maximum limit (MAXN) so that the arrays don’t overflow.
+
+Step 2: Read the input
+I read the numbers from the file, one pair at a time:
+	•	The first number goes into left[n]
+	•	The second number goes into right[n]
+	•	I increase the counter n after each pair.
+
+If I reach the maximum allowed number of lines, the program stops and notifies me to increase the limit.
+
+Step 3: Sort the numbers
+I sort both arrays in ascending order.
+Why sorting? Sorting ensures that the smallest numbers are paired together, the next smallest with each other, and so on.
+This gives the minimum possible total difference between paired numbers.
+
+Step 4: Calculate total difference
+Next, I calculate the absolute difference for each pair:
+	1.	I go through each index i from 0 to n-1
+	2.	Compute the absolute difference: left[i] - right[i]
+	3.	Add this difference to a running total.
+
+I use long long for the total because the sum could be very large.
+
+Step 5: Print the result
+
+Finally, I print the total absolute difference for all pairs.
+
+compile the program >> gcc -O2 -o day1_part1 day1_part1.c -lm
+run the program >> ./day1_part1 < day1_part1_input.txt
+
+
 //explanation
+This program calculates the total distance between pairs of integers in two lists [left] [right].
+each line input contains a pair of integers, separated by a space which is located in day1_part1_input.txt file.
+the program has imported 3 libraries like stdio.h for standard input and output functions like scanf and printf, 
+stdlib.h for general purpose functions like qsort(), math.h for mathematical functions like llabs for absolute value of long long integers.
+
+#define MAXN 100000 // Defines a constant MAXN to limit the maximum number of pairs that can be read.
+
+There is also a function called cmp() it's a comparison function. because qsort expects a function that compares two elements inorder to sort integers.
+cmp(*a, *b) function => accepts two params.
+then it converts the void pointers a and b to integers and retruns 
+    •	-1 if x < y → x comes before y
+	•	0 if x == y → same position
+	•	1 if x > y → x comes after y
+
+#main function
+  int left[MAXN], right[MAXN]; arrays to store numbers from input
+  int n=0; number of lines read
+  	•	left and right store the two numbers from each line of input.
+	•	n keeps track of how many pairs we read.
+          while (scanf("%d %d", &left[n], &right[n]) == 2){
+            //....
+          }
+	•	Reads pairs of integers until the end of the input file.
+	•	scanf("%d %d", ...) == 2 ensures both numbers are successfully read.
+	•	Checks if n exceeds MAXN to prevent overflow.
+
+#Sorting arrays
+    qsort(left, n, sizeof(int), cmp); //sort the left and right arrays in ascending order
+    qsort(right, n, sizeof(int), cmp); // Sorting ensures optimal pairing: smallest number in left goes with smallest number in right to minimize the total difference.
+
+#calculating total difference
+  long long total = 0;
+    for (int i = 0; i < n; i++)
+    {
+        total += llabs((long long)left[i] - (long long)right[i]);
+    } // Computes the sum of absolute differences between paired numbers.
+	// llabs ensures we handle very large numbers safely.
+	// (long long) casts integers to avoid overflow.
+
+#printing result
+    printf("%lld\n", total);
+    return 0;
+
+	•	Prints the total sum of differences.
+	•	%lld is used because the sum is a long long integer.
+	•	return 0; indicates the program finished successfully.
+
