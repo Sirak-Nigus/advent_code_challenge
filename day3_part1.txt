@@ -1,0 +1,19 @@
+Algorithm (Step-by-Step)
+	//explanation
+    1.	Read the entire input
+		Continuously read all lines from stdin into a single buffer so we can scan the whole corrupted text at once.
+	2.	Scan for the pattern mul(X,Y)
+	    •	Walk through the buffer character by character.
+	    •.  Whenever you see the substring "mul(", try to parse:
+	    •	First number: 1–3 digits.
+	    •	Second number: 1–3 digits.
+	    •	A closing parenthesis ).
+	    •	If any part fails (too many digits, missing comma/parenthesis), skip it.
+	3.	Compute and accumulate
+	    •   When a valid pair is found, convert both numbers to integers, multiply them, and add to a running total.
+	4.	Output the result
+	    •	After scanning the entire buffer, print the total sum.
+
+Compile and run
+    gcc day3_part1.c -o day3_part1
+    ./day3_part1 < day3_part1_input.txt
