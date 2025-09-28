@@ -1,0 +1,26 @@
+Algorithm / How the Code Works
+	1.	Read Input File
+		The program expects a filename as a command-line argument.
+		It opens the file for reading.
+	2.	Read Each Line
+		Each line contains a sequence of integers representing “levels.”
+	3.	Parse the Levels
+		The program converts each number in the line into an integer and stores it in an array levels.
+	4.	Check Safety
+		The is_safe() function checks:
+		The difference between consecutive levels must be ≤ 3 and ≥ -3.
+		No two consecutive levels are equal.
+		All levels are strictly increasing or strictly decreasing.
+		Returns 1 if the line is “safe,” otherwise 0.
+	5.	Count Safe Reports
+		For each line in the file, if it is safe, increment safe_count.
+	6.	Output
+		Print the total number of safe reports.
+
+##Compilation and Execution
+
+Compile the C program:
+gcc day2_part2.c -o day2_part2
+
+Run the program with  input file:
+./day3_part2 day2_part1_input.txt
