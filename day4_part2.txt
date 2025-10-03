@@ -1,0 +1,84 @@
+
+The Algorithm
+
+We want to find all occurrences of the X-MAS pattern in a 2D grid where each pattern forms an “X” with 'A' at the center, and 'M' and 'S' on diagonals (forward or backward).
+
+
+1. Input Reading
+		Read the puzzle grid (lines of equal length) from input.txt.
+		Store each line in a 2D array (rows × columns) of characters.
+
+char **grid = NULL;
+int rows = 0;
+char buf[1024];
+while (fgets(buf, sizeof(buf), stdin)) {
+    int len = strlen(buf);
+    if (buf[len-1] == '\n') buf[--len] = '\0';
+    char *row = malloc(len + 1);
+    strcpy(row, buf);
+    grid = realloc(grid, (rows + 1) * sizeof(char *));
+    grid[rows++] = row;
+}
+int cols = strlen(grid[0]);
+
+After this step, grid[r][c] gives the character at row r, column c.
+
+
+2. Define Pattern Check
+		Center character: 'A'
+		Top-left ↔ bottom-right diagonal: 'M' and 'S' (either order)
+		Top-right ↔ bottom-left diagonal: 'M' and 'S' (either order)
+		Only consider cells not on the border as potential centers, since diagonals extend one cell in all directions.
+
+int is_xmas(int r, int c) {
+    if (grid[r][c] != 'A') return 0; // center must be 'A'
+    char tl = grid[r-1][c-1], br = grid[r+1][c+1];
+    char tr = grid[r-1][c+1], bl = grid[r+1][c-1];
+    int d1 = ((tl=='M' && br=='S') || (tl=='S' && br=='M'));
+    int d2 = ((tr=='M' && bl=='S') || (tr=='S' && bl=='M'));
+    return d1 && d2;
+}
+
+3. Scan Each Cell
+		Loop over all possible center cells (excluding borders):
+
+long long count = 0;
+for (int r = 1; r < rows-1; r++) {
+    for (int c = 1; c < cols-1; c++) {
+        if (is_xmas(r, c)) count++;
+    }
+}
+
+4. Count & Output
+		After scanning the whole grid, the variable count contains the total number of X-MAS patterns.
+		Print the final result:
+
+printf("%lld\n", count);
+
+
+
+🔹 Example
+
+Input Grid:
+
+.M.S......
+..A..MSMS.
+.M.S.MAA..
+..A.ASMSM.
+.M.S.M....
+..........
+S.S.S.S.S.
+.A.A.A.A..
+M.M.M.M.M.
+..........
+
+Output:
+
+9
+
+Explanation: There are 9 valid centers of X-MAS patterns.
+
+Compilation and Running
+
+gcc -O2 -std=c11 -o day4_part2 day4_part2.c
+./day4_part2 < day4_part2_input.txt

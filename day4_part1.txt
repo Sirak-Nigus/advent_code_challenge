@@ -1,0 +1,88 @@
+The Algorithm (Step-by-Step)
+
+We want to find all occurrences of the word "XMAS" in a 2D grid where letters can be matched in all 8 directions.
+	1.	Input Reading
+		Read the puzzle grid (lines of equal length).
+		Store each line in a 2D array (rows × columns).
+	2.	Define Search Word & Directions
+		Target word: "XMAS" (length = 4).
+		Directions (dx, dy):
+
+	3.	Scan Each Cell
+	4.	Check Word in a Direction
+	5.	Total Count
+
+
+Explanation of the  source Code
+
+1. Reading the grid
+
+while (fgets(buf, sizeof(buf), stdin)) {
+    ...
+    char *row = malloc(len + 1);
+    strcpy(row, buf);
+    grid = realloc(grid, (rows + 1) * sizeof(char *));
+    grid[rows++] = row;
+}
+
+ After this step, i will have a 2D array of characters (grid).
+
+2. Direction setup
+
+int dx[8] = {1, 1, 0, -1, -1, -1, 0, 1};
+int dy[8] = {0, 1, 1, 1, 0, -1, -1, -1};
+
+3. Searching for “XMAS”
+
+const char *word = "XMAS";
+int wlen = 4;
+
+for (int r = 0; r < rows; r++) {
+    for (int c = 0; c < cols; c++) {
+        if (grid[r][c] != 'X') continue; // Only check from 'X'
+    }
+}
+4. Following a direction
+
+for (int dir = 0; dir < 8; dir++) {
+    int rr = r, cc = c, k;
+    for (k = 0; k < wlen; k++) {
+        if (rr < 0 || rr >= rows || cc < 0 || cc >= cols) break;
+        if (grid[rr][cc] != word[k]) break;
+        rr += dy[dir];
+        cc += dx[dir];
+    }
+    if (k == wlen) count++;
+}
+
+5. Final Output
+
+printf("%lld\n", count);
+
+🔹 Example
+
+Input:
+
+MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX
+
+Output:
+
+//18
+
+Compilation and Running
+gcc -O2 -std=c11 -o day4_part1 day4_part1.c
+
+Running
+./day4_part1 < day4_part1_input.txt
+
+So the algorithm is brute-force directional search across the whole grid.
+It’s simple, but efficient enough for even big inputs since the word length (4) is very small.
